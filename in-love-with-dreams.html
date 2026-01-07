@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Album Playlist</title>
+
+    <style>
+      :root {
+        --bg: #0f1f1e;
+        --panel: #142826;
+        --accent: #7fa99b;
+        --accent-soft: #5f8579;
+        --highlight: #a6c7a2;
+        --text: #e6f0ed;
+        --muted: #8fa7a1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, sans-serif;
+      }
+
+      main {
+        max-width: 760px;
+        margin: auto;
+        padding: 3rem 1.5rem;
+      }
+
+      /* ===== Album Header ===== */
+
+      .album-header {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .vinyl {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at center, #111 0 18%, #222 19% 22%, #111 23%),
+          repeating-radial-gradient(circle, #222 0 2px, #111 3px 6px);
+        animation: spin 4s linear infinite;
+        animation-play-state: paused;
+      }
+
+      .vinyl.playing {
+        animation-play-state: running;
+      }
+
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+
+      .album-info h1 {
+        margin: 0;
+        font-size: 1.6rem;
+      }
+
+      .album-info p {
+        margin-top: 0.5rem;
+        color: var(--muted);
+      }
+
+      .play-album-btn {
+        margin-top: 1rem;
+        background: none;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 0.4rem 1rem;
+        cursor: pointer;
+        border-radius: 999px;
+      }
+
+      .play-album-btn:hover {
+        background: var(--accent-soft);
+        color: var(--bg);
+      }
+
+      /* ===== Track List ===== */
+
+      .track {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .track.active {
+        background: rgba(127,169,155,0.08);
+      }
+
+      .track-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .play-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--accent);
+        background: none;
+        color: var(--accent);
+        cursor: pointer;
+      }
+
+      .track-title {
+        flex: 1;
+      }
+
+      .time {
+        font-size: 0.65rem;
+        color: var(--muted);
+        min-width: 70px;
+        text-align: right;
+      }
+
+      /* ===== Progress Bar ===== */
+
+      .progress-bar {
+        height: 4px;
+        background: #0b1615;
+        margin-top: 6px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .progress {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(to right, var(--accent), var(--highlight));
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <!-- Album Header -->
+      <section class="album-header">
+        <div class="vinyl" id="vinyl"></div>
+
+        <div class="album-info">
+          <h1>In Love With Dreams</h1>
+          <p>Oceana & The Sprites · 2024</p>
+          <button class="play-album-btn">▶ PLAY ALBUM</button>
+        </div>
+      </section>
+
+      <!-- Track List -->
+        <div class="track" data-src="https://64.media.tumblr.com/e2b86da4ed670b1efef1f0d64faf8437/a15f6f953ca138cc-ea/cc16d7674492df7492019a7da48dc104853c4d3f.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Kiss Goodnight (Introduction)</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>
+
+              <div class="track" data-src="https://64.media.tumblr.com/cf338ab1e074704bc88850447b5bd757/a15f6f953ca138cc-fc/0b6e71630ab1bc4c255e3270aa8f95f77d5732d9.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Natural</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/005f0fb8c67baca6b90cb1c3f8066651/a15f6f953ca138cc-1c/262b2392beb1e906fa0dace051728d89e4157a5a.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Weak</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/7a0cbbf0dc06eef3a5869b3986fff824/a15f6f953ca138cc-d7/924fa07f7a400754b56cf1d4b2c09f3fe23c169d.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Fantastic Dreams...</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/64eb0b5a259db9655ff4450c99aa2695/a15f6f953ca138cc-ae/cfb1f275006f7ac45046dab90252e9de499adf49.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">A Million Miles Away (Interlude)</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/d662f02024c9fcd01e637b866e7bcd68/a15f6f953ca138cc-36/fe6da33e223954277e1664aac1cd5c3f4f4b2dfc.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">...And Where To Find Me</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/95658d66b8b2d1f83d2f545e1cb708d3/a15f6f953ca138cc-2b/cc25bb304c8413034e17b088526edb0cb15c1932.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Embers</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/9e8f1bd413af56ddd9c5de145fb22464/a15f6f953ca138cc-83/e1010f240704ec9bb0930dc87111e87223dbec85.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Summer Lover</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+              <div class="track" data-src="https://64.media.tumblr.com/be92b5a7d434f8c66415cd6c0c9eac12/a15f6f953ca138cc-5d/3f55263e9ede47a190e66fc9e32655d6c5762aaa.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Home</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+
+                 <div class="track" data-src="https://64.media.tumblr.com/33fc36789f97876bcae2ec29cc51da72/a15f6f953ca138cc-30/2be5bde41ad9b717b9deb4b2033c63aee6054210.mp3">
+          <div class="track-row">
+            <button class="play-btn">▶</button>
+            <div class="track-title">Morning Light (Outro)</div>
+            <span class="time">0:00 / 0:00</span>
+          </div>
+          <div class="progress-bar"><div class="progress"></div></div>
+        </div>    
+        
+      </section>
+    </main>
+
+    <script>
+
+      const tracks = document.querySelectorAll('.track');
+      const albumBtn = document.querySelector('.play-album-btn');
+      const vinyl = document.getElementById('vinyl');
+
+      let currentAudio = null;
+      let currentTrack = null;
+      let albumIndex = 0;
+      const FADE_TIME = 1.2;
+
+      function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60).toString().padStart(2, '0');
+        return `${m}:${sec}`;
+      }
+
+      function fadeIn(audio) {
+        audio.volume = 0;
+        audio.play();
+        vinyl.classList.add('playing');
+        let v = 0;
+        const i = setInterval(() => {
+          v += 0.05;
+          audio.volume = Math.min(v, 1);
+          if (v >= 1) clearInterval(i);
+        }, FADE_TIME * 50);
+      }
+
+      function fadeOut(audio) {
+        let v = audio.volume;
+        const i = setInterval(() => {
+          v -= 0.05;
+          audio.volume = Math.max(v, 0);
+          if (v <= 0) {
+            audio.pause();
+            clearInterval(i);
+          }
+        }, FADE_TIME * 50);
+      }
+
+      tracks.forEach((track, index) => {
+        const audio = new Audio(track.dataset.src);
+        track.audio = audio;
+
+        const btn = track.querySelector('.play-btn');
+        const progress = track.querySelector('.progress');
+        const bar = track.querySelector('.progress-bar');
+        const time = track.querySelector('.time');
+
+        audio.addEventListener('loadedmetadata', () => {
+          time.textContent = `0:00 / ${formatTime(audio.duration)}`;
+        });
+
+        btn.addEventListener('click', () => {
+          if (currentAudio && currentAudio !== audio) {
+            fadeOut(currentAudio);
+            currentTrack.classList.remove('active');
+            currentTrack.querySelector('.play-btn').textContent = '▶';
+          }
+
+          if (audio.paused) {
+            fadeIn(audio);
+            btn.textContent = '⏸';
+            track.classList.add('active');
+            currentAudio = audio;
+            currentTrack = track;
+          } else {
+            fadeOut(audio);
+            btn.textContent = '▶';
+            track.classList.remove('active');
+            vinyl.classList.remove('playing');
+          }
+        });
+
+        audio.addEventListener('timeupdate', () => {
+          progress.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+          time.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+        });
+
+        bar.addEventListener('click', e => {
+          const pct = e.offsetX / bar.offsetWidth;
+          audio.currentTime = pct * audio.duration;
+        });
+
+        audio.addEventListener('ended', () => {
+          btn.textContent = '▶';
+          track.classList.remove('active');
+          vinyl.classList.remove('playing');
+        });
+      });
+
+      /* Album play */
+      albumBtn.addEventListener('click', () => {
+        albumIndex = 0;
+
+        function playNext() {
+          if (albumIndex >= tracks.length) return;
+
+          const track = tracks[albumIndex];
+          const audio = track.audio;
+          const btn = track.querySelector('.play-btn');
+
+          if (currentAudio) fadeOut(currentAudio);
+
+          fadeIn(audio);
+          btn.textContent = '⏸';
+          track.classList.add('active');
+          currentAudio = audio;
+          currentTrack = track;
+
+          audio.onended = () => {
+            track.classList.remove('active');
+            btn.textContent = '▶';
+            albumIndex++;
+            playNext();
+          };
+        }
+
+        playNext();
+      });
+    </script>
+  </body>
+</html>
