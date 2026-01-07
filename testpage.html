@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Album</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  background: #050a0a;
+  color: #cfeee6;
+  font-family: system-ui, sans-serif;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px;
+}
+
+.album-header {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.vinyl {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle,
+      #1a2b28 0 2px,
+      #0d1615 3px 6px
+    );
+  position: relative;
+  animation: spin 4s linear infinite;
+  animation-play-state: paused;
+}
+
+.vinyl.playing {
+  animation-play-state: running;
+}
+
+.vinyl-label {
+  position: absolute;
+  inset: 28%;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tracklist {
+  margin-top: 40px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.track button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #3fa79a;
+  color: #06211d;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.track-time {
+  margin-left: auto;
+  opacity: .7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="album-header">
+    <div class="vinyl" id="vinyl">
+      <div class="vinyl-label" id="vinylLabel"></div>
+    </div>
+    <div>
+      <h1 id="albumTitle"></h1>
+      <p id="albumArtist"></p>
+    </div>
+  </div>
+
+  <div class="tracklist" id="tracklist"></div>
+
+</div>
+
+<script>
+const albums = {
+  moon: {
+    title: "Good Morning, Moon",
+    artist: "Oceana & The Sprites",
+    label: "images/album1-label.jpg",
+    tracks: [
+      { title: "Good Morning, Moon", src: "audio/moon1.mp3" },
+      { title: "Tidal Lullaby", src: "audio/moon2.mp3" }
+    ]
+  },
+  earth: {
+    title: "Earth & Sky",
+    artist: "Oceana & The Sprites",
+    label: "images/album2-label.jpg",
+    tracks: [
+      { title: "Rootbound", src: "audio/earth1.mp3" },
+      { title: "Cloudveil", src: "audio/earth2.mp3" }
+    ]
+  }
+};
+
+const params = new URLSearchParams(window.location.search);
+const albumKey = params.get("album");
+const album = albums[albumKey];
+
+document.getElementById("albumTitle").textContent = album.title;
+document.getElementById("albumArtist").textContent = album.artist;
+document.getElementById("vinylLabel").style.backgroundImage =
+  `url(${album.label})`;
+
+const vinyl = document.getElementById("vinyl");
+const tracklist = document.getElementById("tracklist");
+
+let currentAudio = null;
+
+album.tracks.forEach(track => {
+  const audio = new Audio(track.src);
+
+  const row = document.createElement("div");
+  row.className = "track";
+
+  const btn = document.createElement("button");
+  btn.textContent = "▶";
+
+  const title = document.createElement("span");
+  title.textContent = track.title;
+
+  const time = document.createElement("span");
+  time.className = "track-time";
+  time.textContent = "0:00";
+
+  audio.addEventListener("loadedmetadata", () => {
+    const m = Math.floor(audio.duration / 60);
+    const s = Math.floor(audio.duration % 60).toString().padStart(2,"0");
+    time.textContent = `${m}:${s}`;
+  });
+
+  btn.onclick = () => {
+    if (currentAudio && currentAudio !== audio) {
+      currentAudio.pause();
+    }
+
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = "⏸";
+      vinyl.classList.add("playing");
+      currentAudio = audio;
+    } else {
+      audio.pause();
+      btn.textContent = "▶";
+      vinyl.classList.remove("playing");
+    }
+  };
+
+  audio.onended = () => {
+    btn.textContent = "▶";
+    vinyl.classList.remove("playing");
+  };
+
+  row.append(btn, title, time);
+  tracklist.appendChild(row);
+});
+</script>
+
+</body>
+</html>
